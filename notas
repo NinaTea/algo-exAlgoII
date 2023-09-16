@@ -1,0 +1,101 @@
+Ej 1 //
+Pc precondicion del ciclo - precondicion intermedia entre el ciclo y el programa
+
+
+{Pc} C {Post} qvq es correcto usando pre y post. En vez del invariante y el variante. 
+Usamos Pc pq hay que avisarle al ciclo desde donde arrancamos(o sea, es la lina inmediata anterior al while)
+ y por eso no usamos el Pre.
+-
+{Pre} S {Post}
+
+
+
+*{Pc} C {Post} (1) es = a decir que Pc => wp(C, post) 
+    con (1) demostramos el teo del invariante(entero)
+
+ 'SI parto de PC y paso por todo el programa termino en post'
+
+Ademas
+**Pre => wp (i = 0; prod=1, Pc) 
+
+con * y ** usando el corolario de monotonia puedo terminar q por lo tanto **Pre => wp(S, Post)** y esto es equiv a {Pre} S {Post}
+
+Ej 2 //
+O sea, la gracia es separar en pedacitos y juntar.
+
+
+Pre
+S1
+C
+S2
+Post
+
+Separamos en ciclos y no ciclos.
+
+Proponemos nuevos predicados
+
+Pre                                         
+S1 -> Se demuestra con la tripla de Hoare   Pre => wp(S1, Pc)       
+Pc 
+C  -> Pc Q Qc usando el teo del invariante. Decimos explicitamente que esta demostracion es equivalente a Pc => wp(C, Qc)
+Qc = miramos que hace el ciclo
+S2 -> Qc => wp(S2, Post)
+Post
+
+Usando los tres -> decimos que eso es un 'Por lo tanto Pre => wp(S1;C;S2, Post) es equivalente {Pre} S1; C; S2 {Post}'
+
+Pc :=  i = 0 AND j = -1
+I := 0<= i < |s| ANDL j = -1 SII (para todo k en Enteros)(k entre 0 incluyente e I excluyente Implica Luego s[k] != 7)
+Fv = |S|-i
+
+Recomendacion para Qc
+Qc = Usar wp(S2, Post)?
+
+-----
+
+{Ic AND B} Sc {I} donde SC es el cuerpo de C.
+
+wp(Sc, I) := 0 <= i < |S| ANDL 
+            (s[i] = 7 *AND* 0<= i + 1 <= |S| *AND* (i = -1 SII (para todo k en Z, k en rango i implica luego s[k] distitno de 7) )) OLOGICO
+            (s[i] != 7 *AND* 0 <= i +1 <= |S| *AND* j != -1  SII (para todo k en Z, k en rango i implica luego s[k] distitno de 7)
+
+Para demostrar la equivalencia entre wp y la tripla dividimos en cachos siguiendo la guarda del ciclo.
+
+PRimero I AND B verdado::: demostramos 0 <= i < |S|
+Tomamos I AND B Verdadero y que vale s[i] = 7:::
+luego I AND B Verdadero y que vale s[i] != 7 :::
+
+caso s[i] = 7;
+viendo los valores de verdad (T AND ? AND ?) OLOGICO (F AND SE VUELVE TODO FALSE) Y aca podemos volar el False. Nos quedamos con T AND ? AND ?, volamos el T y nos queda demostrar los ? AND ? 
+
+Asumiendo I y B y S[i] = 7, podemos demostrar 0<= i + 1 <= |S| AND i = -1 SII (para todo k en Z, k en rango i implica luego s[k] distitno de 7) ). Ya viendo  0<= i + 1 <= |S|  es True por la guarda y el I, i = -1 es False por lo anterior y el para todo es falso porque s[i] = 7.
+
+Ahora queda demostrar s[i] != 7 y repetir lo mismo, vuela el de arriba y se queda el de abajo.
+
+Luego decimos que al demostrarlo por separado, vale que la tripla es equivalente a la wp.
+
+---- 
+
+wp(S2, Post) := (j = -1 AND true(este true es del res) = true SII (para todo k en Z, k en rango i implica luego s[k] distitno de 7) ) *volamos el t=t y nos quedamos con el para todo*
+                OLogico
+                (j != -1 AND false(este false es del res) = true  *nos queda false sii lo otro. Por otro lado, sabemos que f sii f es v cuando la 2da parte es falsa, entonces agregamos a manopla un not adelante del para todo* SII (para todo k en Z, k en rango i implica luego s[k] distitno de 7) ) 
+
+                Se puede reescribir con p sii q con p siendo j = -1 y q siendo el para todo pq teniamos pyq o (nop y noq)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
