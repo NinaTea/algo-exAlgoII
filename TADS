@@ -1,0 +1,96 @@
+Ej1:
+Especificar TADs para las siguientes figuras geometricas. Tiene que contener las operaciones rotar, trasladar
+y escalar y una mas propuestas por usted.
+
+TAD RECTANGULO{
+
+    obs ladoMayor = float;
+    obs ladoMenor = float;
+
+    proc rotar(in figura: RECTANGULO){
+        requiere {True}
+        asegura {figura.ladoMayor = old(figura).ladoMenor}
+        asegura {figura.ladoMenor = old(figura).ladoMayor}
+    }
+    
+    proc trasladar{
+
+    }
+
+    proc escalar{
+
+    }
+
+    proc area(in a: RECTANGULO.ladoMayor, in b: RECTANGULO.ladoMenor)float{
+
+        requiere { a > 0 && b > 0}
+        asegura { res = a * b }
+
+    }
+
+}
+
+TAD ESFERA{
+
+    obs radio = float;
+
+    proc rotar(inout e: ESFERA)
+        requiere {e.radio > 0}
+        asegura e.radio = old(e).radio
+
+    proc trasladar(inout e: ESFERA, in dx: float, in dy: float, in dz: float){
+        requiere {e.radio > 0}
+
+        asegura{ e.radio^2 == (old(e).radio.cos(theta).sen(phi) + dx)^2 + 
+                        (old(e).radio.sen(theta).sen(phi) + dy)^2 + 
+                        (old(e).radio.cos(tphi) + dz)^2 }
+    }
+}
+
+Ej 2 // Especificar TADs para las siguientes estructuras:
+//Multiconjunto<T>
+//Tambien conocido como multiset o bag. Es igual a un conjunto pero cada elemento puede estar contenido multiples
+//veces, y la estructura lleva el registro de la cantidad de veces que se encuentra cada elemento.
+
+TAD Multiconjunto<T>{
+    
+    obs elems: conj<T>
+    ¿obs registro: dict<T, int>?
+    
+
+}
+
+Ej 2//
+//Los items se borran automaticamente luego de un determinado tiempo. Puede asumir que existe una funcion now() que devuelve la hora actual (asuma que es de tipo float)
+
+TAD CacheTTL{
+
+    obs almacenado: seq<(float, T)>
+    obs duracion: float
+
+    proc guardar(inout memoria: CacheTTL, in dato: T){
+
+        requiere True
+
+        asegura (now(), dato) in memoria.almacenado
+
+        asegura memoria.almacenado == old(memoria).almacenado + (now(), dato)
+
+        asegura memoria.duracion == old(memoria).duracion
+
+    }
+
+    proc actualizar(inout memoria: CacheTTL){
+        requiere True
+
+        asegura forall old(memoria).almacenado[i][0]: float :: superaElTiempo(old(memoria).almacenado[i][0]) :: !(old(memoria).almacenado[i] in memoria)
+
+        asegura forall old(memoria).almacenado[i][0]: float :: !superaElTiempo(old(memoria).almacenado[i][0]) :: (old(memoria).almacenado[i] in memoria)
+
+    }
+
+    pred superaElTiempo(in tiempo:float){
+        (now() - tiempo) > memoria.duracion
+    }
+}
+
