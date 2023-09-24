@@ -1,6 +1,6 @@
-Ej1:
-Especificar TADs para las siguientes figuras geometricas. Tiene que contener las operaciones rotar, trasladar
-y escalar y una mas propuestas por usted.
+//Ej1:
+//Especificar TADs para las siguientes figuras geometricas. Tiene que contener las operaciones rotar, trasladar
+//y escalar y una mas propuestas por usted.
 
 TAD RECTANGULO{
 
@@ -101,3 +101,53 @@ TAD CacheTTL{
 
 }
 
+TAD CacheFIFO{
+    obs almacenado: arr<(float, bool)>[int]
+
+    proc guardar(inout memoria: CacheTTL, in dato: T){
+
+        requiere True
+
+        asegura (now(), dato) in memoria.almacenado
+
+        asegura memoria.almacenado == old(memoria).almacenado + (now(), dato)
+
+        asegura memoria.duracion == old(memoria).duracion
+
+    }
+
+    proc actualizar(inout m: CacheFIFO){
+
+        requiere old(m.almacenado) ordenado de menor a mayor segun float
+
+        asegura m.almacenado = old(m).almacenado <==> (false in m.almacenado)
+
+        asegura !(false in old(m).almacenado) ==> !(old(m).almacendo[0] in m.almacenado) 
+
+    }
+
+    proc consultar(in  memoria: CacheFIFO, in indice: int) T {
+        requiere  0 <= i < |memoria.almacenado|
+        asegura res = memoria.almacenado[i][1]
+        asegura memoria.almacenado = old(m).almacenado
+    }
+}
+
+TAD CacheLRU{
+
+    obs almacenado: seq<(float, T)>
+
+    
+    proc consultar(in  memoria: CacheLRU, in indice: int) T {
+        requiere  0 <= i < |memoria.almacenado|
+        asegura res = memoria.almacenado[i][1]
+        asegura memoria.almacenado[i][0] = now()
+        asegura forall j:int:: ((0<= j < |memoria.almacenado| &&L j!=i) ==> 
+                                memoria.almacenado[j] = old(memoria).almacenado[j] ) 
+                                // tengo old si no es inout? 
+    }
+
+    proc borrarMenosUsado(){}
+
+
+}
