@@ -60,7 +60,7 @@ TAD Multiconjunto<T>{
 
 }
 
-Ej 2//
+Ej 3//
 //Los items se borran automaticamente luego de un determinado tiempo. Puede asumir que existe una funcion now() que devuelve la hora actual (asuma que es de tipo float)
 
 TAD CacheTTL{
@@ -92,5 +92,12 @@ TAD CacheTTL{
     pred superaElTiempo(in tiempo:float){
         (now() - tiempo) > memoria.duracion
     }
+
+    proc consultar(in  memoria: CacheTTL, in indice: int) (float, T){
+        requiere  0 <= i < |memoria.almacenado|
+        asegura res[0] = memoria.almacenado[i][0]
+        asegura res[1] = memoria.almacenado[i][1]
+    }
+
 }
 
