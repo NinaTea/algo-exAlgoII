@@ -135,7 +135,7 @@ TAD CacheFIFO{
 
 TAD CacheLRU{
 
-    obs almacenado: seq<(float, T)>
+    obs almacenado: arr<(float, T)>[N]
 
     
     proc consultar(in  memoria: CacheLRU, in indice: int) T {
@@ -147,7 +147,9 @@ TAD CacheLRU{
                                 // tengo old si no es inout? 
     }
 
-    proc borrarMenosUsado(){}
-
+    proc borrarMenosUsado(inout memoria: CacheLRU){
+        requiere estaOrdenada(old(memoria).almacenado)
+        asegura if  
+    }
 
 }
